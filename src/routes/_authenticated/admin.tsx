@@ -141,6 +141,7 @@ function AdminPage() {
   const invalidate = (key: string) => {
     qc.invalidateQueries({ queryKey: ["admin", key] });
     qc.invalidateQueries({ queryKey: [key] });
+    qc.invalidateQueries({ queryKey: ["admin", "overview"] });
   };
 
   const statusMutation = useMutation({
@@ -149,6 +150,16 @@ function AdminPage() {
     onSuccess: () => invalidate("inquiries"),
     onError: () => toast.error("Не удалось обновить статус"),
   });
+
+  const removeInquiry = useMutation({
+    mutationFn: (id: string) => adminDeleteInquiry({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Обращение удалено");
+      invalidate("inquiries");
+    },
+    onError: () => toast.error("Не удалось удалить обращение"),
+  });
+
 
   const saveNews = useMutation({
     mutationFn: (v: typeof emptyNews) => adminSaveNews({ data: v }),
