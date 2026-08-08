@@ -3,6 +3,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { PageShell } from "@/components/PageShell";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { InfoCard } from "@/components/InfoCard";
+import { VasilySection } from "@/components/VasilySection";
+
 import { guidesQuery } from "@/lib/queries";
 
 export const Route = createFileRoute("/residents/")({
