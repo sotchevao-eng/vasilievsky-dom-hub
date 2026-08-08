@@ -74,14 +74,6 @@ function Index() {
               height={1200}
               className="w-full rounded-3xl border border-border object-cover shadow-lift"
             />
-            <img
-              src={vasiliy}
-              alt="Домовой Василий — талисман нашего дома"
-              width={816}
-              height={816}
-              loading="lazy"
-              className="absolute -bottom-6 -left-4 hidden h-28 w-28 drop-shadow-lg sm:block"
-            />
           </div>
         </div>
       </section>
