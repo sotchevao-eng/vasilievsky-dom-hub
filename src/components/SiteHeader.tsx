@@ -118,6 +118,8 @@ export function SiteHeader() {
                     Обратиться в ТСЖ
                   </Link>
                 </Button>
+                <ThemeToggle withLabel className="mt-2" />
+
               </nav>
             </SheetContent>
           </Sheet>
