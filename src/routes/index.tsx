@@ -41,9 +41,6 @@ function Index() {
             <h1 className="font-display text-4xl font-extrabold leading-tight text-foreground sm:text-5xl">
               ТСЖ «Васильевский»
             </h1>
-            <p className="mt-4 font-display text-xl font-semibold text-primary sm:text-2xl">
-              Важная информация о нашем доме — в одном месте
-            </p>
             <p className="mt-4 max-w-xl text-base text-muted-foreground">
               ТСЖ «Васильевский» — это наш общий дом и общее хозяйство.
             </p>
