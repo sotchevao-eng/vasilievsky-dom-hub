@@ -8,23 +8,28 @@ const cards = [
     icon: Megaphone,
     title: "Новости дома",
     text: "Расскажет о важных объявлениях и событиях.",
+    to: "/news",
   },
   {
     icon: Lightbulb,
     title: "Полезные советы",
     text: "Напомнит о бытовых вопросах, безопасности и бережном отношении к дому.",
+    to: "/residents",
   },
   {
     icon: Leaf,
     title: "Наш двор",
     text: "Расскажет о благоустройстве, сезонных работах и общих делах.",
+    to: "/stand",
   },
   {
     icon: Smile,
     title: "Добрососедство",
     text: "Иногда добавит немного доброго юмора и напомнит, что дом начинается с отношения друг к другу.",
+    to: "/contacts",
   },
-];
+] as const;
+
 
 export function VasilySection() {
   return (
