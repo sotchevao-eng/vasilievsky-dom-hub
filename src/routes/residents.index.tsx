@@ -49,9 +49,7 @@ function ResidentsPage() {
           />
         ))}
       </div>
-      <div className="mt-10">
-        <VasilySection />
-      </div>
+
     </PageShell>
 
   );
