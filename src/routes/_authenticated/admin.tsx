@@ -106,11 +106,19 @@ function AdminPage() {
   const qc = useQueryClient();
   const access = useQuery({ queryKey: ["access"], queryFn: () => getMyAccess() });
 
+  const overview = useQuery({
+    queryKey: ["admin", "overview"],
+    queryFn: () => adminOverview(),
+    enabled: access.data?.isAdmin === true,
+    refetchInterval: 60000,
+  });
+
   const inquiries = useQuery({
     queryKey: ["admin", "inquiries"],
     queryFn: () => adminListInquiries(),
     enabled: access.data?.isAdmin === true,
   });
+
   const news = useQuery({
     queryKey: ["admin", "news"],
     queryFn: () => adminListNews(),
