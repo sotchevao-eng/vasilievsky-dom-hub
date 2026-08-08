@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { data: settings } = useSuspenseQuery(settingsQuery);
+
 
   return (
     <main>
