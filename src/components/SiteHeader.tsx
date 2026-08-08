@@ -58,9 +58,9 @@ export function SiteHeader() {
                   activeOptions={{ exact: item.to === "/" }}
                   activeProps={{
                     className:
-                      "bg-primary text-primary-foreground border-primary shadow-[0_3px_0_0_hsl(var(--primary)/0.5)] translate-y-0",
+                      "bg-primary text-primary-foreground border-primary shadow-[0_3px_0_0_var(--primary)] translate-y-0",
                   }}
-                  className="inline-block whitespace-nowrap rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold text-foreground shadow-[0_3px_0_0_hsl(var(--border))] transition-all hover:-translate-y-0.5 hover:bg-secondary active:translate-y-0.5 active:bg-primary active:text-primary-foreground active:shadow-none"
+                  className="inline-block whitespace-nowrap rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold text-foreground shadow-[0_3px_0_0_var(--border)] transition-all hover:-translate-y-0.5 hover:bg-secondary active:translate-y-0.5 active:bg-primary active:text-primary-foreground active:shadow-none"
                 >
                   {item.label}
                 </Link>
