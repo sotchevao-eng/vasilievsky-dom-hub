@@ -77,12 +77,15 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-4">
+          <ThemeToggle />
+
           <Button asChild className="hidden rounded-full sm:inline-flex">
             <Link to="/contacts" hash="obrashchenie">
               <MessageSquareText aria-hidden="true" />
               Обратиться в ТСЖ
             </Link>
           </Button>
+
 
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild className="lg:hidden">
