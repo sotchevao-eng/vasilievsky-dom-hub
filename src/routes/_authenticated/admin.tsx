@@ -9,10 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CrudSection } from "@/components/admin/CrudSection";
 import {
   getMyAccess,
+  adminOverview,
   adminListInquiries,
   adminSetInquiryStatus,
+  adminDeleteInquiry,
   adminListNews,
   adminSaveNews,
   adminDeleteNews,
@@ -24,7 +27,17 @@ import {
   adminListChats,
   adminChatMessages,
   adminSetChatStatus,
+  adminListGuides,
+  adminSaveGuide,
+  adminDeleteGuide,
+  adminListMeetings,
+  adminSaveMeeting,
+  adminDeleteMeeting,
+  adminListStand,
+  adminSaveStandItem,
+  adminDeleteStandItem,
 } from "@/lib/admin.functions";
+
 
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -93,11 +106,19 @@ function AdminPage() {
   const qc = useQueryClient();
   const access = useQuery({ queryKey: ["access"], queryFn: () => getMyAccess() });
 
+  const overview = useQuery({
+    queryKey: ["admin", "overview"],
+    queryFn: () => adminOverview(),
+    enabled: access.data?.isAdmin === true,
+    refetchInterval: 60000,
+  });
+
   const inquiries = useQuery({
     queryKey: ["admin", "inquiries"],
     queryFn: () => adminListInquiries(),
     enabled: access.data?.isAdmin === true,
   });
+
   const news = useQuery({
     queryKey: ["admin", "news"],
     queryFn: () => adminListNews(),
@@ -114,12 +135,15 @@ function AdminPage() {
     enabled: access.data?.isAdmin === true,
   });
 
+  const [inqFilter, setInqFilter] = useState<"all" | "new" | "in_progress" | "done">("all");
   const [newsForm, setNewsForm] = useState(emptyNews);
+
   const [docForm, setDocForm] = useState(emptyDoc);
 
   const invalidate = (key: string) => {
     qc.invalidateQueries({ queryKey: ["admin", key] });
     qc.invalidateQueries({ queryKey: [key] });
+    qc.invalidateQueries({ queryKey: ["admin", "overview"] });
   };
 
   const statusMutation = useMutation({
@@ -128,6 +152,16 @@ function AdminPage() {
     onSuccess: () => invalidate("inquiries"),
     onError: () => toast.error("Не удалось обновить статус"),
   });
+
+  const removeInquiry = useMutation({
+    mutationFn: (id: string) => adminDeleteInquiry({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Обращение удалено");
+      invalidate("inquiries");
+    },
+    onError: () => toast.error("Не удалось удалить обращение"),
+  });
+
 
   const saveNews = useMutation({
     mutationFn: (v: typeof emptyNews) => adminSaveNews({ data: v }),
@@ -207,10 +241,16 @@ function AdminPage() {
         </Button>
       </div>
 
-      <Tabs defaultValue="inquiries">
+      <Tabs defaultValue="overview">
         <TabsList className="mb-6 flex h-auto flex-wrap gap-1 rounded-full bg-secondary p-1">
+          <TabsTrigger value="overview" className="rounded-full">
+            Сводка
+          </TabsTrigger>
           <TabsTrigger value="inquiries" className="rounded-full">
-            Обращения
+            Заявки
+          </TabsTrigger>
+          <TabsTrigger value="chats" className="rounded-full">
+            Чаты
           </TabsTrigger>
           <TabsTrigger value="news" className="rounded-full">
             Новости
@@ -218,50 +258,113 @@ function AdminPage() {
           <TabsTrigger value="documents" className="rounded-full">
             Документы
           </TabsTrigger>
+          <TabsTrigger value="guides" className="rounded-full">
+            Памятки
+          </TabsTrigger>
+          <TabsTrigger value="meetings" className="rounded-full">
+            Собрания
+          </TabsTrigger>
+          <TabsTrigger value="stand" className="rounded-full">
+            Стенд
+          </TabsTrigger>
           <TabsTrigger value="settings" className="rounded-full">
             Настройки
           </TabsTrigger>
-          <TabsTrigger value="chats" className="rounded-full">
-            Чаты
-          </TabsTrigger>
         </TabsList>
 
+        <TabsContent value="overview">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { label: "Новые заявки", value: overview.data?.inquiriesNew },
+              { label: "Заявки в работе", value: overview.data?.inquiriesInProgress },
+              { label: "Заявки решены", value: overview.data?.inquiriesDone },
+              { label: "Тикеты в чатах", value: overview.data?.chatsTickets },
+              { label: "Всего чатов", value: overview.data?.chatsTotal },
+              { label: "Новости", value: overview.data?.news },
+              { label: "Документы", value: overview.data?.documents },
+              { label: "Памятки", value: overview.data?.guides },
+              { label: "Собрания", value: overview.data?.meetings },
+              { label: "Объявления на стенде", value: overview.data?.stand },
+            ].map((card) => (
+              <div key={card.label} className="rounded-2xl border border-border bg-card p-5">
+                <p className="text-sm text-muted-foreground">{card.label}</p>
+                <p className="mt-2 font-display text-3xl font-bold text-foreground">
+                  {overview.isLoading ? "…" : (card.value ?? 0)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </TabsContent>
 
         <TabsContent value="inquiries" className="space-y-4">
-          {(inquiries.data ?? []).length === 0 ? (
-            <p className="text-muted-foreground">Обращений пока нет.</p>
+          <div className="flex flex-wrap gap-2">
+            {(
+              [
+                ["all", "Все"],
+                ["new", "Новые"],
+                ["in_progress", "В работе"],
+                ["done", "Решённые"],
+              ] as const
+            ).map(([value, label]) => (
+              <Button
+                key={value}
+                size="sm"
+                variant={inqFilter === value ? "default" : "outline"}
+                className="rounded-full"
+                onClick={() => setInqFilter(value)}
+              >
+                {label}
+              </Button>
+            ))}
+          </div>
+
+          {(inquiries.data ?? []).filter(
+            (i: any) => inqFilter === "all" || i.status === inqFilter,
+          ).length === 0 ? (
+            <p className="text-muted-foreground">Заявок в этом статусе нет.</p>
           ) : (
-            (inquiries.data ?? []).map((item: any) => (
-              <article key={item.id} className="rounded-2xl border border-border bg-card p-6">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  <span>{new Date(item.created_at).toLocaleString("ru-RU")}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{STATUS_LABEL[item.status] ?? item.status}</span>
-                </div>
-                <h3 className="mt-2 font-display text-lg font-bold text-foreground">
-                  {item.subject}
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {item.name}
-                  {item.apartment ? `, кв. ${item.apartment}` : ""} — {item.contact}
-                </p>
-                <p className="mt-3 whitespace-pre-line text-sm text-foreground">{item.message}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {(["new", "in_progress", "done"] as const).map((s) => (
+            (inquiries.data ?? [])
+              .filter((i: any) => inqFilter === "all" || i.status === inqFilter)
+              .map((item: any) => (
+                <article key={item.id} className="rounded-2xl border border-border bg-card p-6">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <span>{new Date(item.created_at).toLocaleString("ru-RU")}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{STATUS_LABEL[item.status] ?? item.status}</span>
+                  </div>
+                  <h3 className="mt-2 font-display text-lg font-bold text-foreground">
+                    {item.subject}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {item.name}
+                    {item.apartment ? `, кв. ${item.apartment}` : ""} — {item.contact}
+                  </p>
+                  <p className="mt-3 whitespace-pre-line text-sm text-foreground">{item.message}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {(["new", "in_progress", "done"] as const).map((s) => (
+                      <Button
+                        key={s}
+                        size="sm"
+                        variant={item.status === s ? "default" : "outline"}
+                        className="rounded-full"
+                        onClick={() => statusMutation.mutate({ id: item.id, status: s })}
+                      >
+                        {STATUS_LABEL[s]}
+                      </Button>
+                    ))}
                     <Button
-                      key={s}
                       size="sm"
-                      variant={item.status === s ? "default" : "outline"}
-                      className="rounded-full"
-                      onClick={() => statusMutation.mutate({ id: item.id, status: s })}
+                      variant="outline"
+                      className="rounded-full bg-card text-destructive"
+                      onClick={() => removeInquiry.mutate(item.id)}
                     >
-                      {STATUS_LABEL[s]}
+                      Удалить
                     </Button>
-                  ))}
-                </div>
-              </article>
-            ))
+                  </div>
+                </article>
+              ))
           )}
+
         </TabsContent>
 
         <TabsContent value="news" className="space-y-6">
@@ -515,7 +618,104 @@ function AdminPage() {
           </ul>
         </TabsContent>
 
+        <TabsContent value="guides">
+          <CrudSection
+            entity="guides"
+            addLabel="Добавить памятку"
+            emptyText="Памяток пока нет."
+            empty={{
+              id: undefined,
+              slug: "",
+              title: "",
+              summary: "",
+              body: "",
+              icon: "Info",
+              sort_order: 0,
+              published: true,
+            }}
+            fields={[
+              { name: "title", label: "Заголовок", required: true },
+              { name: "slug", label: "Ссылка (латиницей)", required: true },
+              { name: "icon", label: "Иконка (например Info)" },
+              { name: "sort_order", label: "Порядок", type: "number" },
+              { name: "summary", label: "Краткое описание", type: "textarea", rows: 2, full: true },
+              { name: "body", label: "Текст памятки", type: "textarea", rows: 6, full: true },
+            ]}
+            list={() => adminListGuides()}
+            save={(v) => adminSaveGuide({ data: v as any })}
+            remove={(id) => adminDeleteGuide({ data: { id } })}
+            describe={(row) => `порядок ${row["sort_order"]}`}
+          />
+        </TabsContent>
+
+        <TabsContent value="meetings">
+          <CrudSection
+            entity="meetings"
+            addLabel="Добавить собрание"
+            emptyText="Собраний пока нет."
+            empty={{
+              id: undefined,
+              slug: "",
+              title: "",
+              meeting_date: "[дата]",
+              meeting_form: "[форма проведения]",
+              status: "upcoming",
+              agenda: "",
+              results: "",
+              documents_note: "",
+              published: true,
+            }}
+            fields={[
+              { name: "title", label: "Название", required: true },
+              { name: "slug", label: "Ссылка (латиницей)", required: true },
+              { name: "meeting_date", label: "Дата проведения" },
+              { name: "meeting_form", label: "Форма проведения" },
+              { name: "status", label: "Статус (upcoming / past)" },
+              { name: "agenda", label: "Повестка", type: "textarea", rows: 5, full: true },
+              { name: "results", label: "Итоги", type: "textarea", rows: 5, full: true },
+              {
+                name: "documents_note",
+                label: "Примечание к документам",
+                type: "textarea",
+                rows: 2,
+                full: true,
+              },
+            ]}
+            list={() => adminListMeetings()}
+            save={(v) => adminSaveMeeting({ data: v as any })}
+            remove={(id) => adminDeleteMeeting({ data: { id } })}
+            describe={(row) => `${row["meeting_date"]} · ${row["status"]}`}
+          />
+        </TabsContent>
+
+        <TabsContent value="stand">
+          <CrudSection
+            entity="stand"
+            addLabel="Добавить объявление"
+            emptyText="Объявлений пока нет."
+            empty={{
+              id: undefined,
+              title: "",
+              body: "",
+              posted_at: "[дата]",
+              sort_order: 0,
+              published: true,
+            }}
+            fields={[
+              { name: "title", label: "Заголовок", required: true },
+              { name: "posted_at", label: "Дата размещения" },
+              { name: "sort_order", label: "Порядок", type: "number" },
+              { name: "body", label: "Текст объявления", type: "textarea", rows: 5, full: true },
+            ]}
+            list={() => adminListStand()}
+            save={(v) => adminSaveStandItem({ data: v as any })}
+            remove={(id) => adminDeleteStandItem({ data: { id } })}
+            describe={(row) => `${row["posted_at"]} · порядок ${row["sort_order"]}`}
+          />
+        </TabsContent>
+
         <TabsContent value="settings" className="space-y-3">
+
           {(settings.data ?? []).map((item: any) => (
             <SettingRow
               key={item.key}
