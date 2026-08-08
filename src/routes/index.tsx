@@ -1,8 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 import heroImage from "@/assets/hero-house.jpg";
 import { VasilySection } from "@/components/VasilySection";
-import { Button } from "@/components/ui/button";
 import { settingsQuery } from "@/lib/queries";
 
 export const Route = createFileRoute("/")({
