@@ -28,6 +28,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,14 +36,35 @@ function AuthPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) {
-      toast.error("Не удалось войти", { description: "Проверьте email и пароль." });
-      return;
+    if (mode === "signup") {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: window.location.origin + "/admin" },
+      });
+      if (error) {
+        setLoading(false);
+        toast.error("Не удалось зарегистрироваться", { description: error.message });
+        return;
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setLoading(false);
+        toast.error("Не удалось войти", { description: "Проверьте email и пароль." });
+        return;
+      }
     }
+
+    try {
+      await claimFirstAdmin();
+    } catch {
+      // права уже выданы кому-то другому
+    }
+    setLoading(false);
     navigate({ to: "/admin" });
   }
+
 
 
   return (
