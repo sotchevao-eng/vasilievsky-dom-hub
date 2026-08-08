@@ -8,23 +8,28 @@ const cards = [
     icon: Megaphone,
     title: "Новости дома",
     text: "Расскажет о важных объявлениях и событиях.",
+    to: "/news",
   },
   {
     icon: Lightbulb,
     title: "Полезные советы",
     text: "Напомнит о бытовых вопросах, безопасности и бережном отношении к дому.",
+    to: "/residents",
   },
   {
     icon: Leaf,
     title: "Наш двор",
     text: "Расскажет о благоустройстве, сезонных работах и общих делах.",
+    to: "/stand",
   },
   {
     icon: Smile,
     title: "Добрососедство",
     text: "Иногда добавит немного доброго юмора и напомнит, что дом начинается с отношения друг к другу.",
+    to: "/contacts",
   },
-];
+] as const;
+
 
 export function VasilySection() {
   return (
@@ -79,19 +84,28 @@ export function VasilySection() {
 
           <h3 className="mt-8 font-display text-lg font-bold sm:text-xl">Чем поможет Василий</h3>
           <ul className="mt-4 grid gap-4 sm:grid-cols-2">
-            {cards.map(({ icon: Icon, title, text }) => (
-              <li
-                key={title}
-                className="rounded-2xl border border-border bg-card p-5 shadow-soft"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-primary">
-                  <Icon aria-hidden="true" className="h-5 w-5" />
-                </span>
-                <h4 className="mt-3 font-semibold">{title}</h4>
-                <p className="mt-1 text-sm text-muted-foreground">{text}</p>
+            {cards.map(({ icon: Icon, title, text, to }) => (
+              <li key={title}>
+                <Link
+                  to={to}
+                  className="group flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-primary">
+                    <Icon aria-hidden="true" className="h-5 w-5" />
+                  </span>
+                  <h4 className="mt-3 flex items-center gap-1 font-semibold">
+                    {title}
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1"
+                    />
+                  </h4>
+                  <p className="mt-1 text-sm text-muted-foreground">{text}</p>
+                </Link>
               </li>
             ))}
           </ul>
+
 
           <p className="mt-6 rounded-2xl bg-secondary/60 p-4 text-sm italic text-muted-foreground sm:text-base">
             Если увидите на сайте бородатого хозяйственного товарища с ключами, блокнотом или
