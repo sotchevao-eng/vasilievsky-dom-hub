@@ -222,9 +222,11 @@ export const adminOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context);
+    const db = context.supabase as any;
     const count = async (table: string, col?: string, val?: string) => {
-      let q = context.supabase.from(table).select("id", { count: "exact", head: true });
+      let q = db.from(table).select("id", { count: "exact", head: true });
       if (col && val) q = q.eq(col, val);
+
       const { count: c } = await q;
       return c ?? 0;
     };
