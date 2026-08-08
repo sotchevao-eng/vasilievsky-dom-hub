@@ -554,3 +554,118 @@ function SettingRow({
     </div>
   );
 }
+
+const CHAT_STATUS_LABEL: Record<string, string> = {
+  active: "Диалог",
+  ticket: "Нужен оператор",
+  closed: "Закрыт",
+};
+
+function ChatsTab() {
+  const queryClient = useQueryClient();
+  const [selected, setSelected] = useState<string | null>(null);
+
+  const chats = useQuery({
+    queryKey: ["admin", "chats"],
+    queryFn: () => adminListChats(),
+    refetchInterval: 30000,
+  });
+
+  const messages = useQuery({
+    queryKey: ["admin", "chat-messages", selected],
+    queryFn: () => adminChatMessages({ data: { id: selected! } }),
+    enabled: !!selected,
+    refetchInterval: 15000,
+  });
+
+  const setStatus = useMutation({
+    mutationFn: (vars: { id: string; status: "active" | "ticket" | "closed" }) =>
+      adminSetChatStatus({ data: vars }),
+    onSuccess: () => {
+      toast.success("Статус чата обновлён");
+      void queryClient.invalidateQueries({ queryKey: ["admin", "chats"] });
+    },
+    onError: () => toast.error("Не удалось обновить статус"),
+  });
+
+  const list = chats.data ?? [];
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,340px)_1fr]">
+      <div className="space-y-2">
+        {list.length === 0 && <p className="text-muted-foreground">Чатов пока нет.</p>}
+        {list.map((chat: any) => (
+          <button
+            key={chat.id}
+            type="button"
+            onClick={() => setSelected(chat.id)}
+            className={
+              "w-full rounded-2xl border p-4 text-left transition-colors " +
+              (selected === chat.id
+                ? "border-primary bg-secondary"
+                : "border-border bg-card hover:bg-secondary")
+            }
+          >
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-semibold text-foreground">{chat.visitor_name}</span>
+              <span
+                className={
+                  "rounded-full px-2.5 py-1 text-xs font-semibold " +
+                  (chat.status === "ticket"
+                    ? "bg-terracotta text-terracotta-foreground"
+                    : "bg-muted text-muted-foreground")
+                }
+              >
+                {CHAT_STATUS_LABEL[chat.status] ?? chat.status}
+              </span>
+            </div>
+            <p className="mt-1 text-sm text-muted-foreground">{chat.phone}</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {new Date(chat.last_message_at).toLocaleString("ru-RU")}
+            </p>
+            {chat.ticket_reason && (
+              <p className="mt-2 text-xs text-foreground">Причина: {chat.ticket_reason}</p>
+            )}
+          </button>
+        ))}
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-4">
+        {!selected ? (
+          <p className="text-muted-foreground">Выберите чат слева, чтобы посмотреть переписку.</p>
+        ) : (
+          <>
+            <div className="mb-4 flex flex-wrap gap-2">
+              {(["active", "ticket", "closed"] as const).map((s) => (
+                <Button
+                  key={s}
+                  size="sm"
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={() => setStatus.mutate({ id: selected, status: s })}
+                >
+                  {CHAT_STATUS_LABEL[s]}
+                </Button>
+              ))}
+            </div>
+            <div className="space-y-3">
+              {(messages.data ?? []).map((m: any) => (
+                <div
+                  key={m.id}
+                  className={
+                    "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm " +
+                    (m.role === "user"
+                      ? "ml-auto bg-primary text-primary-foreground"
+                      : "bg-secondary text-foreground")
+                  }
+                >
+                  {m.content}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
