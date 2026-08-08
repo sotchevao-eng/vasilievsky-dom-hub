@@ -50,14 +50,17 @@ export function SiteHeader() {
 
 
         <nav aria-label="Основная навигация" className="ml-auto hidden lg:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex items-center gap-2">
             {NAV_ITEMS.map((item) => (
               <li key={item.to}>
                 <Link
                   to={item.to}
                   activeOptions={{ exact: item.to === "/" }}
-                  activeProps={{ className: "bg-secondary text-foreground" }}
-                  className="rounded-full px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  activeProps={{
+                    className:
+                      "bg-primary text-primary-foreground border-primary shadow-[0_3px_0_0_var(--primary)] translate-y-0",
+                  }}
+                  className="inline-block whitespace-nowrap rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold text-foreground shadow-[0_3px_0_0_var(--border)] transition-all hover:-translate-y-0.5 hover:bg-secondary active:translate-y-0.5 active:bg-primary active:text-primary-foreground active:shadow-none"
                 >
                   {item.label}
                 </Link>
@@ -65,6 +68,7 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
+
 
         <div className="ml-auto flex items-center gap-2 lg:ml-4">
           <ThemeToggle />
