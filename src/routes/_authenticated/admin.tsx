@@ -524,7 +524,12 @@ function AdminPage() {
             />
           ))}
         </TabsContent>
+
+        <TabsContent value="chats" className="space-y-4">
+          <ChatsTab />
+        </TabsContent>
       </Tabs>
+
     </PageShell>
   );
 }
