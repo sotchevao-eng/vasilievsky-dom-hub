@@ -241,10 +241,16 @@ function AdminPage() {
         </Button>
       </div>
 
-      <Tabs defaultValue="inquiries">
+      <Tabs defaultValue="overview">
         <TabsList className="mb-6 flex h-auto flex-wrap gap-1 rounded-full bg-secondary p-1">
+          <TabsTrigger value="overview" className="rounded-full">
+            Сводка
+          </TabsTrigger>
           <TabsTrigger value="inquiries" className="rounded-full">
-            Обращения
+            Заявки
+          </TabsTrigger>
+          <TabsTrigger value="chats" className="rounded-full">
+            Чаты
           </TabsTrigger>
           <TabsTrigger value="news" className="rounded-full">
             Новости
@@ -252,50 +258,113 @@ function AdminPage() {
           <TabsTrigger value="documents" className="rounded-full">
             Документы
           </TabsTrigger>
+          <TabsTrigger value="guides" className="rounded-full">
+            Памятки
+          </TabsTrigger>
+          <TabsTrigger value="meetings" className="rounded-full">
+            Собрания
+          </TabsTrigger>
+          <TabsTrigger value="stand" className="rounded-full">
+            Стенд
+          </TabsTrigger>
           <TabsTrigger value="settings" className="rounded-full">
             Настройки
           </TabsTrigger>
-          <TabsTrigger value="chats" className="rounded-full">
-            Чаты
-          </TabsTrigger>
         </TabsList>
 
+        <TabsContent value="overview">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { label: "Новые заявки", value: overview.data?.inquiriesNew },
+              { label: "Заявки в работе", value: overview.data?.inquiriesInProgress },
+              { label: "Заявки решены", value: overview.data?.inquiriesDone },
+              { label: "Тикеты в чатах", value: overview.data?.chatsTickets },
+              { label: "Всего чатов", value: overview.data?.chatsTotal },
+              { label: "Новости", value: overview.data?.news },
+              { label: "Документы", value: overview.data?.documents },
+              { label: "Памятки", value: overview.data?.guides },
+              { label: "Собрания", value: overview.data?.meetings },
+              { label: "Объявления на стенде", value: overview.data?.stand },
+            ].map((card) => (
+              <div key={card.label} className="rounded-2xl border border-border bg-card p-5">
+                <p className="text-sm text-muted-foreground">{card.label}</p>
+                <p className="mt-2 font-display text-3xl font-bold text-foreground">
+                  {overview.isLoading ? "…" : (card.value ?? 0)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </TabsContent>
 
         <TabsContent value="inquiries" className="space-y-4">
-          {(inquiries.data ?? []).length === 0 ? (
-            <p className="text-muted-foreground">Обращений пока нет.</p>
+          <div className="flex flex-wrap gap-2">
+            {(
+              [
+                ["all", "Все"],
+                ["new", "Новые"],
+                ["in_progress", "В работе"],
+                ["done", "Решённые"],
+              ] as const
+            ).map(([value, label]) => (
+              <Button
+                key={value}
+                size="sm"
+                variant={inqFilter === value ? "default" : "outline"}
+                className="rounded-full"
+                onClick={() => setInqFilter(value)}
+              >
+                {label}
+              </Button>
+            ))}
+          </div>
+
+          {(inquiries.data ?? []).filter(
+            (i: any) => inqFilter === "all" || i.status === inqFilter,
+          ).length === 0 ? (
+            <p className="text-muted-foreground">Заявок в этом статусе нет.</p>
           ) : (
-            (inquiries.data ?? []).map((item: any) => (
-              <article key={item.id} className="rounded-2xl border border-border bg-card p-6">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  <span>{new Date(item.created_at).toLocaleString("ru-RU")}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{STATUS_LABEL[item.status] ?? item.status}</span>
-                </div>
-                <h3 className="mt-2 font-display text-lg font-bold text-foreground">
-                  {item.subject}
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {item.name}
-                  {item.apartment ? `, кв. ${item.apartment}` : ""} — {item.contact}
-                </p>
-                <p className="mt-3 whitespace-pre-line text-sm text-foreground">{item.message}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {(["new", "in_progress", "done"] as const).map((s) => (
+            (inquiries.data ?? [])
+              .filter((i: any) => inqFilter === "all" || i.status === inqFilter)
+              .map((item: any) => (
+                <article key={item.id} className="rounded-2xl border border-border bg-card p-6">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <span>{new Date(item.created_at).toLocaleString("ru-RU")}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{STATUS_LABEL[item.status] ?? item.status}</span>
+                  </div>
+                  <h3 className="mt-2 font-display text-lg font-bold text-foreground">
+                    {item.subject}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {item.name}
+                    {item.apartment ? `, кв. ${item.apartment}` : ""} — {item.contact}
+                  </p>
+                  <p className="mt-3 whitespace-pre-line text-sm text-foreground">{item.message}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {(["new", "in_progress", "done"] as const).map((s) => (
+                      <Button
+                        key={s}
+                        size="sm"
+                        variant={item.status === s ? "default" : "outline"}
+                        className="rounded-full"
+                        onClick={() => statusMutation.mutate({ id: item.id, status: s })}
+                      >
+                        {STATUS_LABEL[s]}
+                      </Button>
+                    ))}
                     <Button
-                      key={s}
                       size="sm"
-                      variant={item.status === s ? "default" : "outline"}
-                      className="rounded-full"
-                      onClick={() => statusMutation.mutate({ id: item.id, status: s })}
+                      variant="outline"
+                      className="rounded-full bg-card text-destructive"
+                      onClick={() => removeInquiry.mutate(item.id)}
                     >
-                      {STATUS_LABEL[s]}
+                      Удалить
                     </Button>
-                  ))}
-                </div>
-              </article>
-            ))
+                  </div>
+                </article>
+              ))
           )}
+
         </TabsContent>
 
         <TabsContent value="news" className="space-y-6">
