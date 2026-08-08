@@ -44,7 +44,7 @@ export function SiteHeader() {
             alt="ТСЖ «Васильевский» — официальный сайт товарищества собственников жилья"
             width={512}
             height={512}
-            className={cn("w-auto shrink-0 transition-all", scrolled ? "h-16 sm:h-20" : "h-20 sm:h-28")}
+            className={cn("w-auto shrink-0 transition-all", scrolled ? "h-24 sm:h-32" : "h-32 sm:h-44 lg:h-52")}
           />
         </Link>
 
