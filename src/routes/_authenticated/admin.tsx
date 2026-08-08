@@ -9,10 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CrudSection } from "@/components/admin/CrudSection";
 import {
   getMyAccess,
+  adminOverview,
   adminListInquiries,
   adminSetInquiryStatus,
+  adminDeleteInquiry,
   adminListNews,
   adminSaveNews,
   adminDeleteNews,
@@ -24,7 +27,17 @@ import {
   adminListChats,
   adminChatMessages,
   adminSetChatStatus,
+  adminListGuides,
+  adminSaveGuide,
+  adminDeleteGuide,
+  adminListMeetings,
+  adminSaveMeeting,
+  adminDeleteMeeting,
+  adminListStand,
+  adminSaveStandItem,
+  adminDeleteStandItem,
 } from "@/lib/admin.functions";
+
 
 
 export const Route = createFileRoute("/_authenticated/admin")({
