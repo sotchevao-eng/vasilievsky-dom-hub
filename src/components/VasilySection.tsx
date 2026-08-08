@@ -84,7 +84,7 @@ export function VasilySection() {
                 key={title}
                 className="rounded-2xl border border-border bg-card p-5 shadow-soft"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-accent">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-primary">
                   <Icon aria-hidden="true" className="h-5 w-5" />
                 </span>
                 <h4 className="mt-3 font-semibold">{title}</h4>
