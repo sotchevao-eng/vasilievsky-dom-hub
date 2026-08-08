@@ -4,6 +4,8 @@ import { ArrowRight, FileText, Newspaper, Users, ClipboardList, Phone, Pin } fro
 import heroImage from "@/assets/hero-house.jpg";
 import vasiliy from "@/assets/vasiliy.png";
 import { SectionTitle } from "@/components/SectionTitle";
+import { VasilySection } from "@/components/VasilySection";
+
 import { ImportantNotice } from "@/components/ImportantNotice";
 import { NewsCard } from "@/components/NewsCard";
 import { DocumentCard } from "@/components/DocumentCard";
