@@ -10,33 +10,226 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as DocumentsRouteImport } from './routes/documents'
+import { Route as PersonalDataConsentRouteImport } from './routes/personal-data-consent'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as StandRouteImport } from './routes/stand'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as MeetingsIndexRouteImport } from './routes/meetings.index'
+import { Route as MeetingsSlugRouteImport } from './routes/meetings.$slug'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as NewsSlugRouteImport } from './routes/news.$slug'
+import { Route as ResidentsIndexRouteImport } from './routes/residents.index'
+import { Route as ResidentsSlugRouteImport } from './routes/residents.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactsRoute = ContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentsRoute = DocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PersonalDataConsentRoute = PersonalDataConsentRouteImport.update({
+  id: '/personal-data-consent',
+  path: '/personal-data-consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StandRoute = StandRouteImport.update({
+  id: '/stand',
+  path: '/stand',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const MeetingsIndexRoute = MeetingsIndexRouteImport.update({
+  id: '/meetings/',
+  path: '/meetings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeetingsSlugRoute = MeetingsSlugRouteImport.update({
+  id: '/meetings/$slug',
+  path: '/meetings/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/news/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResidentsIndexRoute = ResidentsIndexRouteImport.update({
+  id: '/residents/',
+  path: '/residents/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResidentsSlugRoute = ResidentsSlugRouteImport.update({
+  id: '/residents/$slug',
+  path: '/residents/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/contacts': typeof ContactsRoute
+  '/documents': typeof DocumentsRoute
+  '/personal-data-consent': typeof PersonalDataConsentRoute
+  '/privacy': typeof PrivacyRoute
+  '/stand': typeof StandRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/meetings/$slug': typeof MeetingsSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
+  '/residents/$slug': typeof ResidentsSlugRoute
+  '/meetings/': typeof MeetingsIndexRoute
+  '/news/': typeof NewsIndexRoute
+  '/residents/': typeof ResidentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/contacts': typeof ContactsRoute
+  '/documents': typeof DocumentsRoute
+  '/personal-data-consent': typeof PersonalDataConsentRoute
+  '/privacy': typeof PrivacyRoute
+  '/stand': typeof StandRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/meetings/$slug': typeof MeetingsSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
+  '/residents/$slug': typeof ResidentsSlugRoute
+  '/meetings': typeof MeetingsIndexRoute
+  '/news': typeof NewsIndexRoute
+  '/residents': typeof ResidentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/contacts': typeof ContactsRoute
+  '/documents': typeof DocumentsRoute
+  '/personal-data-consent': typeof PersonalDataConsentRoute
+  '/privacy': typeof PrivacyRoute
+  '/stand': typeof StandRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/meetings/$slug': typeof MeetingsSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
+  '/residents/$slug': typeof ResidentsSlugRoute
+  '/meetings/': typeof MeetingsIndexRoute
+  '/news/': typeof NewsIndexRoute
+  '/residents/': typeof ResidentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/contacts'
+    | '/documents'
+    | '/personal-data-consent'
+    | '/privacy'
+    | '/stand'
+    | '/admin'
+    | '/meetings/$slug'
+    | '/news/$slug'
+    | '/residents/$slug'
+    | '/meetings/'
+    | '/news/'
+    | '/residents/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/contacts'
+    | '/documents'
+    | '/personal-data-consent'
+    | '/privacy'
+    | '/stand'
+    | '/admin'
+    | '/meetings/$slug'
+    | '/news/$slug'
+    | '/residents/$slug'
+    | '/meetings'
+    | '/news'
+    | '/residents'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/about'
+    | '/auth'
+    | '/contacts'
+    | '/documents'
+    | '/personal-data-consent'
+    | '/privacy'
+    | '/stand'
+    | '/_authenticated/admin'
+    | '/meetings/$slug'
+    | '/news/$slug'
+    | '/residents/$slug'
+    | '/meetings/'
+    | '/news/'
+    | '/residents/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
+  ContactsRoute: typeof ContactsRoute
+  DocumentsRoute: typeof DocumentsRoute
+  PersonalDataConsentRoute: typeof PersonalDataConsentRoute
+  PrivacyRoute: typeof PrivacyRoute
+  StandRoute: typeof StandRoute
+  MeetingsSlugRoute: typeof MeetingsSlugRoute
+  NewsSlugRoute: typeof NewsSlugRoute
+  ResidentsSlugRoute: typeof ResidentsSlugRoute
+  MeetingsIndexRoute: typeof MeetingsIndexRoute
+  NewsIndexRoute: typeof NewsIndexRoute
+  ResidentsIndexRoute: typeof ResidentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +241,142 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacts': {
+      id: '/contacts'
+      path: '/contacts'
+      fullPath: '/contacts'
+      preLoaderRoute: typeof ContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/personal-data-consent': {
+      id: '/personal-data-consent'
+      path: '/personal-data-consent'
+      fullPath: '/personal-data-consent'
+      preLoaderRoute: typeof PersonalDataConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stand': {
+      id: '/stand'
+      path: '/stand'
+      fullPath: '/stand'
+      preLoaderRoute: typeof StandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/meetings/': {
+      id: '/meetings/'
+      path: '/meetings'
+      fullPath: '/meetings/'
+      preLoaderRoute: typeof MeetingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meetings/$slug': {
+      id: '/meetings/$slug'
+      path: '/meetings/$slug'
+      fullPath: '/meetings/$slug'
+      preLoaderRoute: typeof MeetingsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/residents/': {
+      id: '/residents/'
+      path: '/residents'
+      fullPath: '/residents/'
+      preLoaderRoute: typeof ResidentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/residents/$slug': {
+      id: '/residents/$slug'
+      path: '/residents/$slug'
+      fullPath: '/residents/$slug'
+      preLoaderRoute: typeof ResidentsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
+  ContactsRoute: ContactsRoute,
+  DocumentsRoute: DocumentsRoute,
+  PersonalDataConsentRoute: PersonalDataConsentRoute,
+  PrivacyRoute: PrivacyRoute,
+  StandRoute: StandRoute,
+  MeetingsSlugRoute: MeetingsSlugRoute,
+  NewsSlugRoute: NewsSlugRoute,
+  ResidentsSlugRoute: ResidentsSlugRoute,
+  MeetingsIndexRoute: MeetingsIndexRoute,
+  NewsIndexRoute: NewsIndexRoute,
+  ResidentsIndexRoute: ResidentsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
