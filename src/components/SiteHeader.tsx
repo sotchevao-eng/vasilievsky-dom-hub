@@ -4,7 +4,9 @@ import { Menu, MessageSquareText } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
+
 
 export const NAV_ITEMS = [
   { to: "/", label: "Главная" },
