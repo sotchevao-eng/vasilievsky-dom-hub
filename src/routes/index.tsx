@@ -54,7 +54,7 @@ function Index() {
             </p>
             <p className="mt-3 max-w-xl text-base text-muted-foreground">
               Адрес: {settings["address"] ?? "[адрес дома]"}. Правление:{" "}
-              {settings["board_hours"] ?? "[режим работы]"}. Телефон:{" "}
+              {settings["work_hours"] ?? "[режим работы]"}. Телефон:{" "}
               {settings["phone"] ?? "[телефон]"}.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
