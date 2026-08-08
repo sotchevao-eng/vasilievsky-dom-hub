@@ -135,7 +135,9 @@ function AdminPage() {
     enabled: access.data?.isAdmin === true,
   });
 
+  const [inqFilter, setInqFilter] = useState<"all" | "new" | "in_progress" | "done">("all");
   const [newsForm, setNewsForm] = useState(emptyNews);
+
   const [docForm, setDocForm] = useState(emptyDoc);
 
   const invalidate = (key: string) => {
