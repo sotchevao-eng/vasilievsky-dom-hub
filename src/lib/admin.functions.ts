@@ -215,3 +215,183 @@ export const adminSetChatStatus = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+/* ---------- Обзор (сводка) ---------- */
+
+export const adminOverview = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const count = async (table: string, col?: string, val?: string) => {
+      let q = context.supabase.from(table).select("id", { count: "exact", head: true });
+      if (col && val) q = q.eq(col, val);
+      const { count: c } = await q;
+      return c ?? 0;
+    };
+    return {
+      inquiriesNew: await count("inquiries", "status", "new"),
+      inquiriesInProgress: await count("inquiries", "status", "in_progress"),
+      inquiriesDone: await count("inquiries", "status", "done"),
+      chatsTickets: await count("chat_sessions", "status", "ticket"),
+      chatsTotal: await count("chat_sessions"),
+      news: await count("news"),
+      documents: await count("documents"),
+      guides: await count("resident_guides"),
+      meetings: await count("meetings"),
+      stand: await count("stand_items"),
+    };
+  });
+
+export const adminDeleteInquiry = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { error } = await context.supabase.from("inquiries").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/* ---------- Памятки жителям ---------- */
+
+export const adminListGuides = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { data, error } = await context.supabase
+      .from("resident_guides")
+      .select("id, slug, title, summary, body, icon, sort_order, published")
+      .order("sort_order");
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  });
+
+const guideInput = z.object({
+  id: z.string().uuid().optional(),
+  slug: z.string().trim().min(2).max(120).regex(/^[a-z0-9-]+$/, "Только латиница, цифры и дефис"),
+  title: z.string().trim().min(3).max(200),
+  summary: z.string().trim().max(400),
+  body: z.string().trim().max(20000),
+  icon: z.string().trim().max(40),
+  sort_order: z.coerce.number().int().min(0).max(999),
+  published: z.boolean(),
+});
+
+export const adminSaveGuide = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => guideInput.parse(input))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { id, ...values } = data;
+    const { error } = await (id
+      ? context.supabase.from("resident_guides").update(values).eq("id", id)
+      : context.supabase.from("resident_guides").insert(values));
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const adminDeleteGuide = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { error } = await context.supabase.from("resident_guides").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/* ---------- Общие собрания ---------- */
+
+export const adminListMeetings = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { data, error } = await context.supabase
+      .from("meetings")
+      .select("id, slug, title, meeting_date, meeting_form, status, agenda, results, documents_note, published")
+      .order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  });
+
+const meetingInput = z.object({
+  id: z.string().uuid().optional(),
+  slug: z.string().trim().min(2).max(120).regex(/^[a-z0-9-]+$/, "Только латиница, цифры и дефис"),
+  title: z.string().trim().min(3).max(200),
+  meeting_date: z.string().trim().max(60),
+  meeting_form: z.string().trim().max(120),
+  status: z.string().trim().max(30),
+  agenda: z.string().trim().max(20000),
+  results: z.string().trim().max(20000),
+  documents_note: z.string().trim().max(2000),
+  published: z.boolean(),
+});
+
+export const adminSaveMeeting = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => meetingInput.parse(input))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { id, ...values } = data;
+    const { error } = await (id
+      ? context.supabase.from("meetings").update(values).eq("id", id)
+      : context.supabase.from("meetings").insert(values));
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const adminDeleteMeeting = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { error } = await context.supabase.from("meetings").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/* ---------- Информационный стенд ---------- */
+
+export const adminListStand = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { data, error } = await context.supabase
+      .from("stand_items")
+      .select("id, title, body, posted_at, sort_order, published")
+      .order("sort_order");
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  });
+
+const standInput = z.object({
+  id: z.string().uuid().optional(),
+  title: z.string().trim().min(3).max(200),
+  body: z.string().trim().max(20000),
+  posted_at: z.string().trim().max(60),
+  sort_order: z.coerce.number().int().min(0).max(999),
+  published: z.boolean(),
+});
+
+export const adminSaveStandItem = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => standInput.parse(input))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { id, ...values } = data;
+    const { error } = await (id
+      ? context.supabase.from("stand_items").update(values).eq("id", id)
+      : context.supabase.from("stand_items").insert(values));
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const adminDeleteStandItem = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { error } = await context.supabase.from("stand_items").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
