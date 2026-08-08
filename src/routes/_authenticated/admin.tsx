@@ -221,7 +221,11 @@ function AdminPage() {
           <TabsTrigger value="settings" className="rounded-full">
             Настройки
           </TabsTrigger>
+          <TabsTrigger value="chats" className="rounded-full">
+            Чаты
+          </TabsTrigger>
         </TabsList>
+
 
         <TabsContent value="inquiries" className="space-y-4">
           {(inquiries.data ?? []).length === 0 ? (
