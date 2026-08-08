@@ -74,6 +74,20 @@ function AuthPage() {
         onSubmit={onSubmit}
         className="max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-soft sm:p-8"
       >
+        <div className="flex gap-2 rounded-full bg-muted p-1">
+          {(["signin", "signup"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              onClick={() => setMode(m)}
+              className={`h-10 flex-1 rounded-full text-sm font-medium transition ${
+                mode === m ? "bg-card text-foreground shadow-soft" : "text-muted-foreground"
+              }`}
+            >
+              {m === "signin" ? "Вход" : "Регистрация"}
+            </button>
+          ))}
+        </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -92,19 +106,22 @@ function AuthPage() {
             id="password"
             type="password"
             required
-            autoComplete="current-password"
+            minLength={8}
+            autoComplete={mode === "signup" ? "new-password" : "current-password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="h-12 rounded-xl"
           />
         </div>
         <Button type="submit" disabled={loading} className="h-12 w-full rounded-full text-base">
-          {loading ? "Входим…" : "Войти"}
+          {loading ? "Подождите…" : mode === "signup" ? "Зарегистрироваться" : "Войти"}
         </Button>
         <p className="text-xs text-muted-foreground">
-          Доступ выдается председателем правления. Если вы житель дома — воспользуйтесь формой
+          Первый зарегистрированный аккаунт автоматически получает права администратора. Остальным
+          доступ выдается председателем правления. Если вы житель дома — воспользуйтесь формой
           обращения на странице контактов.
         </p>
+
       </form>
     </PageShell>
   );
