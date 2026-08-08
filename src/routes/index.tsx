@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import heroImage from "@/assets/hero-house.jpg";
-import vasiliy from "@/assets/vasiliy.png";
 import { VasilySection } from "@/components/VasilySection";
 import { Button } from "@/components/ui/button";
 import { settingsQuery } from "@/lib/queries";
@@ -73,14 +72,6 @@ function Index() {
               width={1600}
               height={1200}
               className="w-full rounded-3xl border border-border object-cover shadow-lift"
-            />
-            <img
-              src={vasiliy}
-              alt="Домовой Василий — талисман нашего дома"
-              width={816}
-              height={816}
-              loading="lazy"
-              className="absolute -bottom-6 -left-4 hidden h-28 w-28 drop-shadow-lg sm:block"
             />
           </div>
         </div>
