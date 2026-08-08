@@ -189,7 +189,11 @@ function Index() {
           </div>
         </section>
 
+        {/* VASILY */}
+        <VasilySection />
+
         {/* RESIDENTS */}
+
         <section aria-labelledby="zhitelyam" className="rounded-3xl bg-secondary p-6 sm:p-10">
           <div className="flex flex-wrap items-center gap-4">
             <img
