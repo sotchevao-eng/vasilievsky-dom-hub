@@ -38,28 +38,16 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4">
-        <Link to="/" className="flex items-center gap-3 rounded-lg" aria-label="На главную">
+        <Link to="/" className="flex items-center rounded-lg" aria-label="ТСЖ «Васильевский» — на главную">
           <img
             src={logo}
-            alt="Логотип ТСЖ «Васильевский»"
+            alt="ТСЖ «Васильевский» — официальный сайт товарищества собственников жилья"
             width={512}
             height={512}
-            className={cn("shrink-0 transition-all", scrolled ? "h-9 w-9" : "h-11 w-11")}
+            className={cn("w-auto shrink-0 transition-all", scrolled ? "h-12" : "h-16")}
           />
-          <span className="flex flex-col leading-tight">
-            <span className="font-display text-base font-extrabold text-foreground sm:text-lg">
-              ТСЖ «Васильевский»
-            </span>
-            <span
-              className={cn(
-                "hidden text-xs text-muted-foreground sm:block",
-                scrolled && "sm:hidden",
-              )}
-            >
-              Официальный сайт товарищества собственников жилья
-            </span>
-          </span>
         </Link>
+
 
         <nav aria-label="Основная навигация" className="ml-auto hidden lg:block">
           <ul className="flex items-center gap-1">
