@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import heroImage from "@/assets/hero-house.jpg";
-import vasiliy from "@/assets/vasiliy.png";
 import { VasilySection } from "@/components/VasilySection";
 import { Button } from "@/components/ui/button";
 import { settingsQuery } from "@/lib/queries";
