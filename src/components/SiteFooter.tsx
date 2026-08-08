@@ -84,7 +84,13 @@ export function SiteFooter() {
             Информация на сайте носит информационный характер. Актуальные сведения уточняйте в
             правлении ТСЖ.
           </p>
+          <p>
+            <Link to="/admin" className="hover:underline">
+              Вход для правления
+            </Link>
+          </p>
         </div>
+
       </div>
     </footer>
   );
