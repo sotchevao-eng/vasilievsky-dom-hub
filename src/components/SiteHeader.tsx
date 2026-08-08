@@ -4,7 +4,9 @@ import { Menu, MessageSquareText } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
+
 
 export const NAV_ITEMS = [
   { to: "/", label: "Главная" },
@@ -77,12 +79,15 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-4">
+          <ThemeToggle />
+
           <Button asChild className="hidden rounded-full sm:inline-flex">
             <Link to="/contacts" hash="obrashchenie">
               <MessageSquareText aria-hidden="true" />
               Обратиться в ТСЖ
             </Link>
           </Button>
+
 
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild className="lg:hidden">
@@ -113,6 +118,8 @@ export function SiteHeader() {
                     Обратиться в ТСЖ
                   </Link>
                 </Button>
+                <ThemeToggle withLabel className="mt-2" />
+
               </nav>
             </SheetContent>
           </Sheet>
