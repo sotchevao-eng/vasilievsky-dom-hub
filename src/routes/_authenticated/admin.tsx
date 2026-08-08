@@ -618,7 +618,104 @@ function AdminPage() {
           </ul>
         </TabsContent>
 
+        <TabsContent value="guides">
+          <CrudSection
+            entity="guides"
+            addLabel="Добавить памятку"
+            emptyText="Памяток пока нет."
+            empty={{
+              id: undefined,
+              slug: "",
+              title: "",
+              summary: "",
+              body: "",
+              icon: "Info",
+              sort_order: 0,
+              published: true,
+            }}
+            fields={[
+              { name: "title", label: "Заголовок", required: true },
+              { name: "slug", label: "Ссылка (латиницей)", required: true },
+              { name: "icon", label: "Иконка (например Info)" },
+              { name: "sort_order", label: "Порядок", type: "number" },
+              { name: "summary", label: "Краткое описание", type: "textarea", rows: 2, full: true },
+              { name: "body", label: "Текст памятки", type: "textarea", rows: 6, full: true },
+            ]}
+            list={() => adminListGuides()}
+            save={(v) => adminSaveGuide({ data: v as any })}
+            remove={(id) => adminDeleteGuide({ data: { id } })}
+            describe={(row) => `порядок ${row["sort_order"]}`}
+          />
+        </TabsContent>
+
+        <TabsContent value="meetings">
+          <CrudSection
+            entity="meetings"
+            addLabel="Добавить собрание"
+            emptyText="Собраний пока нет."
+            empty={{
+              id: undefined,
+              slug: "",
+              title: "",
+              meeting_date: "[дата]",
+              meeting_form: "[форма проведения]",
+              status: "upcoming",
+              agenda: "",
+              results: "",
+              documents_note: "",
+              published: true,
+            }}
+            fields={[
+              { name: "title", label: "Название", required: true },
+              { name: "slug", label: "Ссылка (латиницей)", required: true },
+              { name: "meeting_date", label: "Дата проведения" },
+              { name: "meeting_form", label: "Форма проведения" },
+              { name: "status", label: "Статус (upcoming / past)" },
+              { name: "agenda", label: "Повестка", type: "textarea", rows: 5, full: true },
+              { name: "results", label: "Итоги", type: "textarea", rows: 5, full: true },
+              {
+                name: "documents_note",
+                label: "Примечание к документам",
+                type: "textarea",
+                rows: 2,
+                full: true,
+              },
+            ]}
+            list={() => adminListMeetings()}
+            save={(v) => adminSaveMeeting({ data: v as any })}
+            remove={(id) => adminDeleteMeeting({ data: { id } })}
+            describe={(row) => `${row["meeting_date"]} · ${row["status"]}`}
+          />
+        </TabsContent>
+
+        <TabsContent value="stand">
+          <CrudSection
+            entity="stand"
+            addLabel="Добавить объявление"
+            emptyText="Объявлений пока нет."
+            empty={{
+              id: undefined,
+              title: "",
+              body: "",
+              posted_at: "[дата]",
+              sort_order: 0,
+              published: true,
+            }}
+            fields={[
+              { name: "title", label: "Заголовок", required: true },
+              { name: "posted_at", label: "Дата размещения" },
+              { name: "sort_order", label: "Порядок", type: "number" },
+              { name: "body", label: "Текст объявления", type: "textarea", rows: 5, full: true },
+            ]}
+            list={() => adminListStand()}
+            save={(v) => adminSaveStandItem({ data: v as any })}
+            remove={(id) => adminDeleteStandItem({ data: { id } })}
+            describe={(row) => `${row["posted_at"]} · порядок ${row["sort_order"]}`}
+          />
+        </TabsContent>
+
         <TabsContent value="settings" className="space-y-3">
+
           {(settings.data ?? []).map((item: any) => (
             <SettingRow
               key={item.key}
