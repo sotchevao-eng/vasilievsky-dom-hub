@@ -80,16 +80,25 @@ export function CrudSection({
           const id = `${entity}-${field.name}`;
           return (
             <div key={field.name} className={`space-y-2 ${field.full ? "sm:col-span-2" : ""}`}>
-              <Label htmlFor={id}>{field.label}</Label>
-              {field.type === "textarea" ? (
-                <Textarea
+              {field.type === "image" ? (
+                <ImageField
                   id={id}
-                  rows={field.rows ?? 4}
-                  required={field.required}
+                  label={field.label}
                   value={String(form[field.name] ?? "")}
-                  onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
+                  onChange={(url) => setForm({ ...form, [field.name]: url })}
                 />
               ) : (
+                <>
+                  <Label htmlFor={id}>{field.label}</Label>
+                  {field.type === "textarea" ? (
+                    <Textarea
+                      id={id}
+                      rows={field.rows ?? 4}
+                      required={field.required}
+                      value={String(form[field.name] ?? "")}
+                      onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
+                    />
+                  ) : (
                 <Input
                   id={id}
                   type={field.type === "number" ? "number" : "text"}
