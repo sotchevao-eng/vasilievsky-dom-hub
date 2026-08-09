@@ -52,7 +52,7 @@ export const getNewsItem = createServerFn({ method: "GET" })
 export const getGuides = createServerFn({ method: "GET" }).handler(async () => {
   const { data } = await publicClient()
     .from("resident_guides")
-    .select("id, slug, title, summary, icon, sort_order")
+    .select("id, slug, title, summary, icon, image_url, sort_order")
     .eq("published", true)
     .order("sort_order", { ascending: true });
   return data ?? [];
@@ -63,7 +63,7 @@ export const getGuide = createServerFn({ method: "GET" })
   .handler(async ({ data: input }) => {
     const { data } = await publicClient()
       .from("resident_guides")
-      .select("id, slug, title, summary, body, icon")
+      .select("id, slug, title, summary, body, icon, image_url")
       .eq("published", true)
       .eq("slug", input.slug)
       .maybeSingle();
@@ -93,7 +93,7 @@ export const getMeeting = createServerFn({ method: "GET" })
   .handler(async ({ data: input }) => {
     const { data } = await publicClient()
       .from("meetings")
-      .select("id, slug, title, meeting_date, meeting_form, status, agenda, results, documents_note")
+      .select("id, slug, title, meeting_date, meeting_form, status, agenda, results, documents_note, image_url")
       .eq("published", true)
       .eq("slug", input.slug)
       .maybeSingle();
@@ -103,7 +103,7 @@ export const getMeeting = createServerFn({ method: "GET" })
 export const getStandItems = createServerFn({ method: "GET" }).handler(async () => {
   const { data } = await publicClient()
     .from("stand_items")
-    .select("id, title, body, posted_at, sort_order")
+    .select("id, title, body, posted_at, image_url, sort_order")
     .eq("published", true)
     .order("sort_order", { ascending: true });
   return data ?? [];
