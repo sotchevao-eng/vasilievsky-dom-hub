@@ -56,7 +56,7 @@ function MeetingPage() {
           src={meeting.image_url}
           alt={meeting.title}
           loading="lazy"
-          className="mb-6 max-h-96 w-full rounded-2xl border border-border object-cover shadow-soft"
+          className="mb-6 max-h-96 w-full rounded-2xl border border-border bg-muted object-contain shadow-soft"
         />
       ) : null}
       <div className="grid gap-4 lg:grid-cols-2">

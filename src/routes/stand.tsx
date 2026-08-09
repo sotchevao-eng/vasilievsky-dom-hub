@@ -48,7 +48,7 @@ function StandPage() {
                 src={item.image_url}
                 alt={item.title}
                 loading="lazy"
-                className="mt-3 max-h-80 w-full rounded-xl border border-border object-cover"
+                className="mt-3 max-h-80 w-full rounded-xl border border-border bg-muted object-contain"
               />
             ) : null}
             <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">{item.body}</p>

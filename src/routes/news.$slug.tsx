@@ -54,7 +54,7 @@ function NewsItemPage() {
           src={item.image_url}
           alt={item.title}
           loading="lazy"
-          className="mt-6 w-full rounded-3xl border border-border object-cover"
+          className="mt-6 max-h-[32rem] w-full rounded-3xl border border-border bg-muted object-contain"
         />
       ) : null}
       <div className="mt-6 max-w-3xl space-y-4 text-base leading-relaxed text-foreground/85">

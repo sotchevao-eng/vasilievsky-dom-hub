@@ -45,7 +45,7 @@ export function ImageField({
           <img
             src={value}
             alt="Предпросмотр загруженной картинки"
-            className="h-20 w-20 rounded-xl border border-border object-cover"
+            className="h-20 w-20 rounded-xl border border-border bg-muted object-contain"
           />
         ) : null}
         <input
