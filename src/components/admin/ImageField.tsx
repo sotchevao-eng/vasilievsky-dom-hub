@@ -85,6 +85,10 @@ export function ImageField({
         placeholder="или вставьте ссылку на картинку"
         onChange={(e) => onChange(e.target.value)}
       />
-    </div>
+      <p className="text-xs text-muted-foreground">
+        Картинка показывается целиком, без обрезки. Рекомендуем горизонтальные изображения
+        1200×630 px (соотношение 16:9 или 1.91:1), формат JPG/PNG, до 5 МБ.
+      </p>
+
   );
 }
