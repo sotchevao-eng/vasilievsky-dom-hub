@@ -51,6 +51,14 @@ function MeetingPage() {
         <Breadcrumbs items={[{ label: "Собрания", to: "/meetings" }, { label: meeting.title }]} />
       }
     >
+      {meeting.image_url ? (
+        <img
+          src={meeting.image_url}
+          alt={meeting.title}
+          loading="lazy"
+          className="mb-6 max-h-96 w-full rounded-2xl border border-border object-cover shadow-soft"
+        />
+      ) : null}
       <div className="grid gap-4 lg:grid-cols-2">
         <Block title="Дата проведения" text={meeting.meeting_date} />
         <Block title="Форма проведения" text={meeting.meeting_form} />

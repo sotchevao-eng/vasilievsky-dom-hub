@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageField } from "@/components/admin/ImageField";
 
 export type CrudField = {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "number";
+  type?: "text" | "textarea" | "number" | "image";
   rows?: number;
   full?: boolean;
   required?: boolean;
@@ -80,29 +81,40 @@ export function CrudSection({
           const id = `${entity}-${field.name}`;
           return (
             <div key={field.name} className={`space-y-2 ${field.full ? "sm:col-span-2" : ""}`}>
-              <Label htmlFor={id}>{field.label}</Label>
-              {field.type === "textarea" ? (
-                <Textarea
+              {field.type === "image" ? (
+                <ImageField
                   id={id}
-                  rows={field.rows ?? 4}
-                  required={field.required}
+                  label={field.label}
                   value={String(form[field.name] ?? "")}
-                  onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
+                  onChange={(url) => setForm({ ...form, [field.name]: url })}
                 />
               ) : (
-                <Input
-                  id={id}
-                  type={field.type === "number" ? "number" : "text"}
-                  required={field.required}
-                  value={String(form[field.name] ?? "")}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      [field.name]:
-                        field.type === "number" ? Number(e.target.value) : e.target.value,
-                    })
-                  }
-                />
+                <>
+                  <Label htmlFor={id}>{field.label}</Label>
+                  {field.type === "textarea" ? (
+                    <Textarea
+                      id={id}
+                      rows={field.rows ?? 4}
+                      required={field.required}
+                      value={String(form[field.name] ?? "")}
+                      onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
+                    />
+                  ) : (
+                    <Input
+                      id={id}
+                      type={field.type === "number" ? "number" : "text"}
+                      required={field.required}
+                      value={String(form[field.name] ?? "")}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          [field.name]:
+                            field.type === "number" ? Number(e.target.value) : e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                </>
               )}
             </div>
           );

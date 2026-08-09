@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CrudSection } from "@/components/admin/CrudSection";
+import { ImageField } from "@/components/admin/ImageField";
 import {
   getMyAccess,
   adminOverview,
@@ -68,6 +69,7 @@ const emptyNews = {
   category: "Объявления",
   excerpt: "",
   body: "",
+  image_url: "",
   published_at: "[дата]",
   published: true,
 };
@@ -418,6 +420,14 @@ function AdminPage() {
               </Field>
             </div>
             <div className="sm:col-span-2">
+              <ImageField
+                id="n-image"
+                label="Картинка новости"
+                value={newsForm.image_url}
+                onChange={(url) => setNewsForm({ ...newsForm, image_url: url })}
+              />
+            </div>
+            <div className="sm:col-span-2">
               <Field label="Текст новости" id="n-body">
                 <Textarea
                   id="n-body"
@@ -471,6 +481,7 @@ function AdminPage() {
                         category: item.category,
                         excerpt: item.excerpt ?? "",
                         body: item.body ?? "",
+                        image_url: item.image_url ?? "",
                         published_at: item.published_at ?? "",
                         published: item.published,
                       })
@@ -630,6 +641,7 @@ function AdminPage() {
               summary: "",
               body: "",
               icon: "Info",
+              image_url: "",
               sort_order: 0,
               published: true,
             }}
@@ -638,6 +650,7 @@ function AdminPage() {
               { name: "slug", label: "Ссылка (латиницей)", required: true },
               { name: "icon", label: "Иконка (например Info)" },
               { name: "sort_order", label: "Порядок", type: "number" },
+              { name: "image_url", label: "Картинка памятки", type: "image", full: true },
               { name: "summary", label: "Краткое описание", type: "textarea", rows: 2, full: true },
               { name: "body", label: "Текст памятки", type: "textarea", rows: 6, full: true },
             ]}
@@ -663,6 +676,7 @@ function AdminPage() {
               agenda: "",
               results: "",
               documents_note: "",
+              image_url: "",
               published: true,
             }}
             fields={[
@@ -671,6 +685,7 @@ function AdminPage() {
               { name: "meeting_date", label: "Дата проведения" },
               { name: "meeting_form", label: "Форма проведения" },
               { name: "status", label: "Статус (upcoming / past)" },
+              { name: "image_url", label: "Картинка", type: "image", full: true },
               { name: "agenda", label: "Повестка", type: "textarea", rows: 5, full: true },
               { name: "results", label: "Итоги", type: "textarea", rows: 5, full: true },
               {
@@ -698,6 +713,7 @@ function AdminPage() {
               title: "",
               body: "",
               posted_at: "[дата]",
+              image_url: "",
               sort_order: 0,
               published: true,
             }}
@@ -705,6 +721,7 @@ function AdminPage() {
               { name: "title", label: "Заголовок", required: true },
               { name: "posted_at", label: "Дата размещения" },
               { name: "sort_order", label: "Порядок", type: "number" },
+              { name: "image_url", label: "Картинка объявления", type: "image", full: true },
               { name: "body", label: "Текст объявления", type: "textarea", rows: 5, full: true },
             ]}
             list={() => adminListStand()}

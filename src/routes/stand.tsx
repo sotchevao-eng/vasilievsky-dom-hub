@@ -43,6 +43,14 @@ function StandPage() {
               {item.posted_at}
             </span>
             <h2 className="mt-2 font-display text-lg font-bold text-foreground">{item.title}</h2>
+            {item.image_url ? (
+              <img
+                src={item.image_url}
+                alt={item.title}
+                loading="lazy"
+                className="mt-3 max-h-80 w-full rounded-xl border border-border object-cover"
+              />
+            ) : null}
             <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">{item.body}</p>
           </li>
         ))}

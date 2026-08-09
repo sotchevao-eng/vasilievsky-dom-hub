@@ -56,7 +56,7 @@ export const adminListNews = createServerFn({ method: "GET" })
     await assertAdmin(context);
     const { data, error } = await context.supabase
       .from("news")
-      .select("id, slug, title, category, excerpt, body, published_at, published")
+      .select("id, slug, title, category, excerpt, body, image_url, published_at, published")
       .order("published_at", { ascending: false });
     if (error) throw new Error(error.message);
     return data ?? [];
@@ -75,6 +75,7 @@ const newsInput = z.object({
   excerpt: z.string().trim().max(400),
   body: z.string().trim().min(10).max(20000),
   published_at: z.string().trim().max(40),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")).transform((v) => v || null),
   published: z.boolean(),
 });
 
@@ -265,7 +266,7 @@ export const adminListGuides = createServerFn({ method: "GET" })
     await assertAdmin(context);
     const { data, error } = await context.supabase
       .from("resident_guides")
-      .select("id, slug, title, summary, body, icon, sort_order, published")
+      .select("id, slug, title, summary, body, icon, image_url, sort_order, published")
       .order("sort_order");
     if (error) throw new Error(error.message);
     return data ?? [];
@@ -278,6 +279,7 @@ const guideInput = z.object({
   summary: z.string().trim().max(400),
   body: z.string().trim().max(20000),
   icon: z.string().trim().max(40),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")).transform((v) => v || null),
   sort_order: z.coerce.number().int().min(0).max(999),
   published: z.boolean(),
 });
@@ -313,7 +315,7 @@ export const adminListMeetings = createServerFn({ method: "GET" })
     await assertAdmin(context);
     const { data, error } = await context.supabase
       .from("meetings")
-      .select("id, slug, title, meeting_date, meeting_form, status, agenda, results, documents_note, published")
+      .select("id, slug, title, meeting_date, meeting_form, status, agenda, results, documents_note, image_url, published")
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
     return data ?? [];
@@ -329,6 +331,7 @@ const meetingInput = z.object({
   agenda: z.string().trim().max(20000),
   results: z.string().trim().max(20000),
   documents_note: z.string().trim().max(2000),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")).transform((v) => v || null),
   published: z.boolean(),
 });
 
@@ -363,7 +366,7 @@ export const adminListStand = createServerFn({ method: "GET" })
     await assertAdmin(context);
     const { data, error } = await context.supabase
       .from("stand_items")
-      .select("id, title, body, posted_at, sort_order, published")
+      .select("id, title, body, posted_at, image_url, sort_order, published")
       .order("sort_order");
     if (error) throw new Error(error.message);
     return data ?? [];
@@ -374,6 +377,7 @@ const standInput = z.object({
   title: z.string().trim().min(3).max(200),
   body: z.string().trim().max(20000),
   posted_at: z.string().trim().max(60),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")).transform((v) => v || null),
   sort_order: z.coerce.number().int().min(0).max(999),
   published: z.boolean(),
 });

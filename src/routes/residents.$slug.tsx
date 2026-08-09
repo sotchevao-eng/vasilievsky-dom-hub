@@ -41,6 +41,14 @@ function GuidePage() {
         <Breadcrumbs items={[{ label: "Жителям", to: "/residents" }, { label: guide.title }]} />
       }
     >
+      {guide.image_url ? (
+        <img
+          src={guide.image_url}
+          alt={guide.title}
+          loading="lazy"
+          className="mb-6 max-h-96 w-full max-w-3xl rounded-2xl border border-border object-cover shadow-soft"
+        />
+      ) : null}
       <div className="max-w-3xl space-y-4 rounded-2xl border border-border bg-card p-6 text-base leading-relaxed text-foreground/85 shadow-soft sm:p-8">
         {guide.body.split("\n").filter(Boolean).map((p, i) => (
           <p key={i}>{p}</p>
