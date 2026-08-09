@@ -99,19 +99,21 @@ export function CrudSection({
                       onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
                     />
                   ) : (
-                <Input
-                  id={id}
-                  type={field.type === "number" ? "number" : "text"}
-                  required={field.required}
-                  value={String(form[field.name] ?? "")}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      [field.name]:
-                        field.type === "number" ? Number(e.target.value) : e.target.value,
-                    })
-                  }
-                />
+                    <Input
+                      id={id}
+                      type={field.type === "number" ? "number" : "text"}
+                      required={field.required}
+                      value={String(form[field.name] ?? "")}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          [field.name]:
+                            field.type === "number" ? Number(e.target.value) : e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                </>
               )}
             </div>
           );
