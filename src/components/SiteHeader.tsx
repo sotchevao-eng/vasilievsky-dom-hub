@@ -20,23 +20,10 @@ export const NAV_ITEMS = [
 ] as const;
 
 export function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur transition-all",
-        scrolled ? "py-1.5 shadow-soft" : "py-3",
-      )}
-    >
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 py-2 shadow-soft backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4">
         <Link to="/" className="flex items-center rounded-lg" aria-label="ТСЖ «Васильевский» — на главную">
           <img
@@ -44,7 +31,7 @@ export function SiteHeader() {
             alt="ТСЖ «Васильевский» — официальный сайт товарищества собственников жилья"
             width={512}
             height={512}
-            className={cn("w-auto shrink-0 transition-all", scrolled ? "h-24 sm:h-32" : "h-32 sm:h-44 lg:h-52")}
+            className="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
           />
         </Link>
 
