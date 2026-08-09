@@ -46,7 +46,7 @@ function GuidePage() {
           src={guide.image_url}
           alt={guide.title}
           loading="lazy"
-          className="mb-6 max-h-96 w-full max-w-3xl rounded-2xl border border-border object-cover shadow-soft"
+          className="mb-6 max-h-96 w-full max-w-3xl rounded-2xl border border-border bg-muted object-contain shadow-soft"
         />
       ) : null}
       <div className="max-w-3xl space-y-4 rounded-2xl border border-border bg-card p-6 text-base leading-relaxed text-foreground/85 shadow-soft sm:p-8">

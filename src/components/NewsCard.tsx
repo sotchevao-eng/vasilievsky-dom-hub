@@ -27,7 +27,7 @@ export function NewsCard({ item }: { item: NewsItem }) {
           src={item.image_url}
           alt={item.title}
           loading="lazy"
-          className="h-44 w-full object-cover"
+          className="h-44 w-full bg-muted object-contain"
         />
       ) : null}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
