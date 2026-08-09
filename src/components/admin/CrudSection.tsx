@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 export type CrudField = {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "number";
+  type?: "text" | "textarea" | "number" | "image";
   rows?: number;
   full?: boolean;
   required?: boolean;
