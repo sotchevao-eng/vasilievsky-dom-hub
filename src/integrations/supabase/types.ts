@@ -166,6 +166,7 @@ export type Database = {
           created_at: string
           documents_note: string
           id: string
+          image_url: string | null
           meeting_date: string
           meeting_form: string
           published: boolean
@@ -180,6 +181,7 @@ export type Database = {
           created_at?: string
           documents_note?: string
           id?: string
+          image_url?: string | null
           meeting_date?: string
           meeting_form?: string
           published?: boolean
@@ -194,6 +196,7 @@ export type Database = {
           created_at?: string
           documents_note?: string
           id?: string
+          image_url?: string | null
           meeting_date?: string
           meeting_form?: string
           published?: boolean
@@ -271,6 +274,7 @@ export type Database = {
           created_at: string
           icon: string
           id: string
+          image_url: string | null
           published: boolean
           slug: string
           sort_order: number
@@ -283,6 +287,7 @@ export type Database = {
           created_at?: string
           icon?: string
           id?: string
+          image_url?: string | null
           published?: boolean
           slug: string
           sort_order?: number
@@ -295,6 +300,7 @@ export type Database = {
           created_at?: string
           icon?: string
           id?: string
+          image_url?: string | null
           published?: boolean
           slug?: string
           sort_order?: number
@@ -327,6 +333,7 @@ export type Database = {
           body: string
           created_at: string
           id: string
+          image_url: string | null
           posted_at: string
           published: boolean
           sort_order: number
@@ -337,6 +344,7 @@ export type Database = {
           body?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           posted_at?: string
           published?: boolean
           sort_order?: number
@@ -347,6 +355,7 @@ export type Database = {
           body?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           posted_at?: string
           published?: boolean
           sort_order?: number
