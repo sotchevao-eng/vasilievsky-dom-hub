@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroImage from "@/assets/hero-house.jpg";
+import heroAsset from "@/assets/hero-yard.png.asset.json";
 import { VasilySection } from "@/components/VasilySection";
 import { settingsQuery } from "@/lib/queries";
 
@@ -79,10 +79,10 @@ function Index() {
           </div>
           <div className="relative">
             <img
-              src={heroImage}
+              src={heroAsset.url}
               alt="Иллюстрация жилого дома и благоустроенного двора"
-              width={1600}
-              height={1200}
+              width={1536}
+              height={1024}
               className="w-full rounded-3xl border border-border object-cover shadow-lift"
             />
           </div>
