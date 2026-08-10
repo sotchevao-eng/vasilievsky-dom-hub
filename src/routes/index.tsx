@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroImage from "@/assets/hero-house.jpg";
+import heroAsset from "@/assets/hero-yard.png.asset.json";
 import { VasilySection } from "@/components/VasilySection";
 import { settingsQuery } from "@/lib/queries";
 
