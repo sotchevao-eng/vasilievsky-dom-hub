@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Megaphone, Lightbulb, Leaf, Smile, ArrowRight } from "lucide-react";
+import { Megaphone, Lightbulb, Leaf, Smile, ArrowRight, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import vasiliy from "@/assets/vasiliy.png";
+import { VASILY_GAME_URL } from "@/lib/game";
 
 const cards = [
   {
@@ -80,6 +81,10 @@ export function VasilySection() {
               При этом все официальные решения принимаются правлением ТСЖ. Василий помогает только
               рассказывать, объяснять и напоминать.
             </p>
+            <p>
+              А ещё у Василия есть небольшая игра: можно провести день хранителя дома, разобрать
+              заявки и посмотреть, как решения влияют на комфорт, бюджет и репутацию.
+            </p>
           </div>
 
           <h3 className="mt-8 font-display text-lg font-bold sm:text-xl">Чем поможет Василий</h3>
@@ -112,11 +117,19 @@ export function VasilySection() {
             лейкой — всё в порядке. Это Василий присматривает за информационным хозяйством 🙂
           </p>
 
-          <Button asChild className="mt-6 rounded-full">
-            <Link to="/residents">
-              Полезная информация для жителей <ArrowRight aria-hidden="true" />
-            </Link>
-          </Button>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button asChild className="rounded-full">
+              <a href={VASILY_GAME_URL}>
+                <Gamepad2 aria-hidden="true" />
+                Играть с Василием
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="rounded-full">
+              <Link to="/residents">
+                Полезная информация для жителей <ArrowRight aria-hidden="true" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

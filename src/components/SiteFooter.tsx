@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import logo from "@/assets/logo.png";
 import { settingsQuery } from "@/lib/queries";
+import { VASILY_GAME_URL } from "@/lib/game";
 
 const links = [
   { to: "/", label: "Главная" },
@@ -13,6 +14,28 @@ const links = [
   { to: "/meetings", label: "Собрания" },
   { to: "/contacts", label: "Контакты" },
 ] as const;
+
+/** Когда появится портфолио — вставьте URL, и подпись станет ссылкой. */
+const OXANA_PORTFOLIO_URL = "";
+
+function OxanaCredit({ year }: { year: number }) {
+  const label = `© ${year} OXANA PROJECTS`;
+  const className =
+    "tracking-wide text-deep-green-foreground/70 transition-colors hover:text-deep-green-foreground";
+  if (OXANA_PORTFOLIO_URL) {
+    return (
+      <a
+        href={OXANA_PORTFOLIO_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${className} hover:underline`}
+      >
+        {label}
+      </a>
+    );
+  }
+  return <p className={className}>{label}</p>;
+}
 
 export function SiteFooter() {
   const { data: settings } = useQuery(settingsQuery);
@@ -53,6 +76,11 @@ export function SiteFooter() {
           </ul>
           <ul className="mt-5 space-y-2 text-sm">
             <li>
+              <a href={VASILY_GAME_URL} className="hover:underline">
+                Игра «Домовой Василий»
+              </a>
+            </li>
+            <li>
               <Link to="/privacy" className="hover:underline">
                 Политика конфиденциальности
               </Link>
@@ -79,7 +107,9 @@ export function SiteFooter() {
 
       <div className="border-t border-deep-green-foreground/15">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-deep-green-foreground/70">
-          <p>© {year} ТСЖ «Васильевский»</p>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+            <OxanaCredit year={year} />
+          </div>
           <p>
             Информация на сайте носит информационный характер. Актуальные сведения уточняйте в
             правлении ТСЖ.
@@ -90,7 +120,6 @@ export function SiteFooter() {
             </Link>
           </p>
         </div>
-
       </div>
     </footer>
   );
