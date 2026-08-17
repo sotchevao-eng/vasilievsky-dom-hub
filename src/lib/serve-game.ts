@@ -43,11 +43,9 @@ export async function serveGame(request: Request): Promise<Response | null> {
   const url = new URL(request.url);
   if (!isGamePath(url.pathname)) return null;
 
-  if (url.pathname === GAME_PREFIX) {
-    return Response.redirect(new URL(`${GAME_PREFIX}/${url.search}`, url), 308);
-  }
-
-  const relative = decodeURIComponent(url.pathname.slice(GAME_PREFIX.length + 1));
+  const relative = decodeURIComponent(
+    url.pathname === GAME_PREFIX ? "" : url.pathname.slice(GAME_PREFIX.length + 1),
+  );
   if (relative.includes("\0") || relative.split(/[/\\]/).includes("..")) {
     return new Response("Not found", { status: 404 });
   }
